@@ -13,10 +13,15 @@ add_executable(trace
 )
 target_link_libraries(trace PRIVATE fusionio::trace MPI::MPI_CXX)
 
+add_executable(trace_particle
+    trace_particle.cpp
+)
+target_link_libraries(trace_particle PRIVATE fusionio::fusionio MPI::MPI_CXX)
+
 find_package(LAPACK REQUIRED)
 add_executable(plot_dr plot_dr.c)
-target_link_libraries(plot_dr PRIVATE LAPACK::LAPACK)
+target_link_libraries(plot_dr PRIVATE LAPACK::LAPACK m)
 
-install(TARGETS trace plot_dr
+install(TARGETS trace trace_particle plot_dr
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

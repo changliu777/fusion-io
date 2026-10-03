@@ -26,10 +26,13 @@ INCLUDE :=-I$(FIO_ROOT)/fusion_io \
 
 OBJS = trace_integrator.o
 
-all : trace plot_dr
+all : trace trace_particle plot_dr
 
 trace : main.o libtrace.a
 	$(LD) $(LDFLAGS) $< -L. -ltrace $(LIBS) -o $@
+
+trace_particle : trace_particle.o
+	$(LD) $(LDFLAGS) $< $(LIBS) -o $@
 
 plot_dr : plot_dr.o
 	$(LD) $(LDFLAGS) $< $(LAPACK) -o $@
@@ -37,9 +40,9 @@ plot_dr : plot_dr.o
 libtrace.a : $(OBJS)
 	$(ARCH) $@ $(OBJS) 
 
-install : trace plot_dr
+install : trace trace_particle plot_dr
 	mkdir -p $(FIO_INSTALL_DIR)/bin
-	cp plot_dr trace $(FIO_INSTALL_DIR)/bin/
+	cp plot_dr trace trace_particle $(FIO_INSTALL_DIR)/bin/
 
 include $(FIO_ROOT)/install/common_footer.mk
 
